@@ -38,13 +38,13 @@
 	
   <ItemGroup>
 
-    <ProjectReference Include="..\..\WasmSB\Wasm.Audio\Wasm.Audio.csproj" />
-    <ProjectReference Include="..\..\WasmSB\Wasm.Canvas\Wasm.Canvas.csproj" />
-    <ProjectReference Include="..\..\WasmSB\Wasm.Clipboard\Wasm.Clipboard.csproj" />
-    <ProjectReference Include="..\..\WasmSB\Wasm.Dom\Wasm.Dom.csproj" />
-    <ProjectReference Include="..\..\WasmSB\Wasm.JSInterop\Wasm.JSInterop.csproj" />
-    <ProjectReference Include="..\..\WasmSB\Wasm.XHR\Wasm.XHR.csproj" />
-    <ProjectReference Include="..\..\WasmSB\Wasm.XR\Wasm.XR.csproj" />
+    <ProjectReference Include="..\Submodules\WasmSB\Wasm.Audio\Wasm.Audio.csproj" />
+    <ProjectReference Include="..\Submodules\WasmSB\Wasm.Canvas\Wasm.Canvas.csproj" />
+    <ProjectReference Include="..\Submodules\WasmSB\Wasm.Clipboard\Wasm.Clipboard.csproj" />
+    <ProjectReference Include="..\Submodules\WasmSB\Wasm.Dom\Wasm.Dom.csproj" />
+    <ProjectReference Include="..\Submodules\WasmSB\Wasm.JSInterop\Wasm.JSInterop.csproj" />
+    <ProjectReference Include="..\Submodules\WasmSB\Wasm.XHR\Wasm.XHR.csproj" />
+    <ProjectReference Include="..\Submodules\WasmSB\Wasm.XR\Wasm.XR.csproj" />
 
     <ProjectReference Include="..\src\Xna.Framework\Xna.Framework.csproj">
       <Project>{741B4B1E-89E4-434C-8867-6129838AFD51}</Project>
