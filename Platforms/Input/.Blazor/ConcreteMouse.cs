@@ -79,7 +79,12 @@ namespace Microsoft.Xna.Platform.Input
 
         public override void PlatformSetCursor(MouseCursor cursor)
         {
-            throw new NotImplementedException();
+            #region TODO https://github.com/kniEngine/kni/pull/2346
+
+            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
+            gameWindow._canvas.Cursor = ((IPlatformMouseCursor)cursor).GetStrategy<ConcreteMouseCursor>().CursorCSSPropertyValue;
+
+            #endregion
         }
 
 

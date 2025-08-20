@@ -173,6 +173,27 @@ namespace Microsoft.Xna.Framework
 
                 if (!_keys.Contains(xnakey))
                     _keys.Add(xnakey);
+
+                #region TODO https://github.com/kniEngine/kni/pull/2351
+
+                if (IsTextInputAttached())
+                {
+                    bool controlKeyBlocksTextInput = false;
+                    for (int i = 0; i < _keys.Count; i++)
+                    {
+                        Keys keyToCheck = _keys[i];
+                        if (keyToCheck == Keys.LeftControl || keyToCheck == Keys.RightControl || keyToCheck == Keys.LeftAlt)
+                        {
+                            controlKeyBlocksTextInput = true;
+                            break;
+                        }
+                    }
+
+                    if (key != '\0' && !controlKeyBlocksTextInput)
+                        OnTextInput(key, xnakey);
+                }
+
+                #endregion
             };
             _window.OnKeyUp += (object sender, char key, int keyCode, int location) =>
             {
