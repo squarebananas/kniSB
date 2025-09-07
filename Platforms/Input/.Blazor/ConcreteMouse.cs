@@ -3,13 +3,14 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using nkast.Wasm.Dom;
 
 namespace Microsoft.Xna.Platform.Input
 {
     public sealed class ConcreteMouse : MouseStrategy
     {
         private IntPtr _wndHandle = IntPtr.Zero;
-        private nkast.Wasm.Dom.Window _domWindow;
+        private Window _domWindow;
 
         private Point _pos;
         private int _scrollX, _scrollY;
@@ -86,14 +87,18 @@ namespace Microsoft.Xna.Platform.Input
 
         private void OnMouseMove(object sender, int x, int y)
         {
-            _pos.X = x;
-            _pos.Y = y;
+            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
+            DOMRect DOMRect = gameWindow._canvas.GetBoundingClientRect();
+            _pos.X = x - (int)DOMRect.X;
+            _pos.Y = y - (int)DOMRect.Y;
         }
 
         private void OnMouseDown(object sender, int x, int y, int buttons)
         {
-            _pos.X = x;
-            _pos.Y = y;
+            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
+            DOMRect DOMRect = gameWindow._canvas.GetBoundingClientRect();
+            _pos.X = x - (int)DOMRect.X;
+            _pos.Y = y - (int)DOMRect.Y;
             _leftButton   = ((buttons & 1) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _rightButton  = ((buttons & 2) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _middleButton = ((buttons & 4) != 0) ? ButtonState.Pressed : ButtonState.Released;
@@ -101,8 +106,10 @@ namespace Microsoft.Xna.Platform.Input
 
         private void OnMouseUp(object sender, int x, int y, int buttons)
         {
-            _pos.X = x;
-            _pos.Y = y;
+            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
+            DOMRect DOMRect = gameWindow._canvas.GetBoundingClientRect();
+            _pos.X = x - (int)DOMRect.X;
+            _pos.Y = y - (int)DOMRect.Y;
             _leftButton   = ((buttons & 1) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _rightButton  = ((buttons & 2) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _middleButton = ((buttons & 4) != 0) ? ButtonState.Pressed : ButtonState.Released;
