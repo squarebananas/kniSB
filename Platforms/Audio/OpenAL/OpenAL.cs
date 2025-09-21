@@ -242,20 +242,18 @@ namespace Microsoft.Xna.Platform.Audio.OpenAL
             else
                 return FuncLoader.LoadLibraryExt("openal");
 #elif ANDROID
-            IntPtr ret = FuncLoader.LoadLibrary("libopenal32.so");
-
-            if (ret == IntPtr.Zero)
-            {
-                string appFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                string appDir = Path.GetDirectoryName(appFilesDir);
-                string lib = Path.Combine(appDir, "lib", "libopenal32.so");
-
-                ret = FuncLoader.LoadLibrary(lib);
-            }
-
-            return ret;
-#else
+            IntPtr ret = FuncLoader.LoadLibrary("libopenal.so");
+            if (ret != IntPtr.Zero)
+                return ret;
+            
+            string appFilesDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string appDir = Path.GetDirectoryName(appFilesDir);
+            string lib = Path.Combine(appDir, "lib", "libopenal.so");
+            return FuncLoader.LoadLibrary(lib);
+#elif IOS || TVOS
             return FuncLoader.LoadLibrary("/System/Library/Frameworks/OpenAL.framework/OpenAL");
+#else
+            throw new PlatformNotSupportedException();
 #endif
         }
 
@@ -518,25 +516,19 @@ namespace Microsoft.Xna.Platform.Audio.OpenAL
             alSourceQueueBuffers(source, 1, &buffer);
         }
 
-        internal unsafe int[] SourceUnqueueBuffers(int source, int numEntries)
-        {
-            if (numEntries <= 0)
-                throw new ArgumentOutOfRangeException("numEntries", "Must be greater than zero.");
-
-            int[] buffers = new int[numEntries];
-            fixed (int* pbuffers = buffers)
-            {
-                alSourceUnqueueBuffers(source, numEntries, pbuffers);
-            }
-            return buffers;
-        }
-
         internal unsafe void SourceUnqueueBuffers(int source, int numEntries, int[] buffers)
         {
             fixed (int* pbuffers = buffers)
             {
                 alSourceUnqueueBuffers(source, numEntries, pbuffers);
             }
+        }
+
+        internal unsafe int SourceUnqueueBuffer(int source)
+        {
+            int buffer;
+            alSourceUnqueueBuffers(source, 1, &buffer);
+            return buffer;
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
