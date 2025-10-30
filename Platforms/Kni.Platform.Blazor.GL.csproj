@@ -14,9 +14,11 @@
   <PropertyGroup>
     <EnableDefaultItems>false</EnableDefaultItems>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks Condition="!$([MSBuild]::VersionGreaterThanOrEquals($(VisualStudioVersion), '17.16'))">net8.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals($(VisualStudioVersion), '17.16'))">net8.0;net10.0</TargetFrameworks>
     <LangVersion>Default</LangVersion>
     <IsTrimmable Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsTrimmable>
+    <IsTrimmable Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">true</IsTrimmable>
     <AssemblyName>Kni.Platform</AssemblyName>
     <RootNamespace>Microsoft.Xna.Framework</RootNamespace>
     <DefineConstants>$(DefineConstants);BLAZORGL;STBSHARP_INTERNAL</DefineConstants>
