@@ -661,7 +661,8 @@ namespace Microsoft.Xna.Platform.Graphics.Utilities.Png
 
         private static byte[] ReverseByteArray(byte[] byteArray)
         {
-            return (byte[])byteArray.Reverse().ToArray();
+            return Enumerable.Reverse(byteArray).ToArray();
+            //return (byte[])byteArray.Reverse().ToArray();
         }
     }
 }
