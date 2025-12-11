@@ -265,6 +265,18 @@ namespace Microsoft.Xna.Platform.XR.LibOVR
             return _handsState;
         }
 
+        public override HandJointCollectionStrategy CreateHandJointCollectionStrategy(int handIndex)
+        {
+            throw new PlatformNotSupportedException();
+            // return new ConcreteHandJointCollection(this, handIndex);
+        }
+        
+        public override HandJointCollection GetHandJoints(int handIndex)
+        {
+            throw new PlatformNotSupportedException();
+            // return _strategy.GetHandJoints(handIndex);
+        }
+
         public override void EndSessionAsync()
         {
             throw new NotImplementedException();

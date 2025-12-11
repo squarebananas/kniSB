@@ -95,6 +95,16 @@ namespace Microsoft.Xna.Framework.XR
             throw new PlatformNotSupportedException();
         }
 
+        public override HandJointCollectionStrategy CreateHandJointCollectionStrategy(int handIndex)
+        {
+            throw new PlatformNotSupportedException();
+        }
+
+        public override HandJointCollection GetHandJoints(int handIndex)
+        {
+            throw new PlatformNotSupportedException();
+        }
+
         public override void EndSessionAsync()
         {
             throw new PlatformNotSupportedException();

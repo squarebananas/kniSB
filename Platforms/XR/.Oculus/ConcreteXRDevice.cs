@@ -232,6 +232,8 @@ namespace Microsoft.Xna.Platform.XR
             }
 
             this._deviceState = XRDeviceState.Disabled;
+
+            base.Initialize();
         }
 
         public override int BeginSessionAsync(XRSessionMode sessionMode)
@@ -553,6 +555,14 @@ namespace Microsoft.Xna.Platform.XR
                 }
             }
 
+            OxrSpace space = (_isTrackFloorLevelEnabled) ? _LocalFloorSpace : _LocalSpace;
+            for (int handIndex = 0; handIndex < 2; handIndex++)
+            {
+                ConcreteHandJointCollection concreteHandJointCollection = ((IPlatformHandJointCollectionStrategy)_handJoints
+                    [handIndex]).Strategy.ToConcrete<ConcreteHandJointCollection>();
+                concreteHandJointCollection.SetHandJoints(_oxrInstance, _oxrSession.Session, space.Space, time);
+            }
+
             return 0;
         }
 
@@ -784,6 +794,16 @@ namespace Microsoft.Xna.Platform.XR
             return _handsState;
         }
 
+        public override HandJointCollectionStrategy CreateHandJointCollectionStrategy(int handIndex)
+        {
+            return new ConcreteHandJointCollection(handIndex);
+        }
+
+        public override HandJointCollection GetHandJoints(int handIndex)
+        {
+            return _handJoints[handIndex];
+        }
+
         public override void EndSessionAsync()
         {
             throw new PlatformNotSupportedException();
@@ -848,6 +868,7 @@ namespace Microsoft.Xna.Platform.XR
             requiredExtensionNames.Add(nameof(OxrExtensions.XR_FB_swapchain_update_state_opengl_es));
             requiredExtensionNames.Add(nameof(OxrExtensions.XR_FB_foveation));
             requiredExtensionNames.Add(nameof(OxrExtensions.XR_FB_foveation_configuration));
+            requiredExtensionNames.Add(nameof(OxrExtensions.XR_EXT_hand_tracking));
 
             if (this.SessionMode == XRSessionMode.AR)
                 requiredExtensionNames.Add(nameof(OxrExtensions.XR_FB_passthrough));
@@ -1491,6 +1512,14 @@ namespace Microsoft.Xna.Platform.XR
                     }
                 }
 
+                // Hand joints tracking
+                SystemHandTrackingPropertiesEXT handTrackingSystemProperties = new SystemHandTrackingPropertiesEXT(StructureType.SystemHandTrackingPropertiesExt);
+                xrResult = _oxrInstance.GetSystemProperties(&handTrackingSystemProperties, out systemProperties);
+                Debug.Assert(xrResult == Result.Success, "SystemHandTrackingPropertiesEXT");
+                if (handTrackingSystemProperties.SupportsHandTracking == 1)
+                {
+                    // TODO
+                }
 
                 // Create the frame buffers.
                 for (int eye = 0; eye < ovrMaxNumEyes; eye++)

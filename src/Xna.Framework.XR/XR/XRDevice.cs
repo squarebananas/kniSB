@@ -115,6 +115,10 @@ namespace Microsoft.Xna.Framework.XR
             _strategy.TrackFloorLevelAsync(enable);
         }
 
+        public HandJointCollection GetHandJoints(int handIndex)
+        {
+            return _strategy.GetHandJoints(handIndex);
+        }
 
         #region IDisposable
         ~XRDevice()
