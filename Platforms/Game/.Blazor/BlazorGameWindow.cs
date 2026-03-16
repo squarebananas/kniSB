@@ -42,6 +42,9 @@ namespace Microsoft.Xna.Framework
         // flag to indicate that we're switching to/from full screen and should ignore resize events
         private bool _switchingFullScreen;
 
+        private int _prevBackBufferWidth = -1;
+        private int _prevBackBufferHeight = -1;
+
 
 
 
@@ -268,10 +271,11 @@ namespace Microsoft.Xna.Framework
 
         internal void OnResize(object sender)
         {
-
-            UpdateBackBufferSize();
-
-            OnClientSizeChanged();
+            // Intentionally no-op. The window.resize event fires before CSS layout has settled,
+            // so reading canvas/window dimensions here would yield stale values. Canvas sizing is
+            // driven externally by a JS rAF loop that reads the holder element's clientWidth/Height
+            // after layout completes. ClientSizeChanged is then raised from OnPresentationChanged
+            // once the back buffer dimensions match the actual canvas size.
         }
 
         // TODO: move UpdateBackBufferSize() in graphicsDeviceManager
@@ -379,6 +383,15 @@ namespace Microsoft.Xna.Framework
                 ExitFullScreen();
                 raiseClientSizeChanged = true;
             }
+
+            if (!raiseClientSizeChanged &&
+                (pp.BackBufferWidth != _prevBackBufferWidth || pp.BackBufferHeight != _prevBackBufferHeight))
+            {
+                if (pp.BackBufferWidth == _canvas.Width && pp.BackBufferHeight == _canvas.Height)
+                    raiseClientSizeChanged = true;
+            }
+            _prevBackBufferWidth = pp.BackBufferWidth;
+            _prevBackBufferHeight = pp.BackBufferHeight;
 
             if (raiseClientSizeChanged)
                 OnClientSizeChanged();
