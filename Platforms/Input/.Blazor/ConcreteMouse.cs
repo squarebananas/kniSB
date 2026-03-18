@@ -87,18 +87,12 @@ namespace Microsoft.Xna.Platform.Input
 
         private void OnMouseMove(object sender, int x, int y)
         {
-            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
-            DOMRect DOMRect = gameWindow._canvas.GetBoundingClientRect();
-            _pos.X = x - (int)DOMRect.X;
-            _pos.Y = y - (int)DOMRect.Y;
+            UpdateMousePosition(x, y);
         }
 
         private void OnMouseDown(object sender, int x, int y, int buttons)
         {
-            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
-            DOMRect DOMRect = gameWindow._canvas.GetBoundingClientRect();
-            _pos.X = x - (int)DOMRect.X;
-            _pos.Y = y - (int)DOMRect.Y;
+            UpdateMousePosition(x, y);
             _leftButton   = ((buttons & 1) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _rightButton  = ((buttons & 2) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _middleButton = ((buttons & 4) != 0) ? ButtonState.Pressed : ButtonState.Released;
@@ -106,10 +100,7 @@ namespace Microsoft.Xna.Platform.Input
 
         private void OnMouseUp(object sender, int x, int y, int buttons)
         {
-            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
-            DOMRect DOMRect = gameWindow._canvas.GetBoundingClientRect();
-            _pos.X = x - (int)DOMRect.X;
-            _pos.Y = y - (int)DOMRect.Y;
+            UpdateMousePosition(x, y);
             _leftButton   = ((buttons & 1) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _rightButton  = ((buttons & 2) != 0) ? ButtonState.Pressed : ButtonState.Released;
             _middleButton = ((buttons & 4) != 0) ? ButtonState.Pressed : ButtonState.Released;
@@ -121,5 +112,12 @@ namespace Microsoft.Xna.Platform.Input
             _scrollY -= deltaY;
         }
 
+        private void UpdateMousePosition(int x, int y)
+        {
+            BlazorGameWindow gameWindow = BlazorGameWindow.FromHandle(_wndHandle);
+            Rectangle clientBounds = gameWindow.ClientBounds;
+            _pos.X = x - clientBounds.X;
+            _pos.Y = y - clientBounds.Y;
+        }
     }
 }

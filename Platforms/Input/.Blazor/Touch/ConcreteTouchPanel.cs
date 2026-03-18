@@ -77,10 +77,11 @@ namespace Microsoft.Xna.Platform.Input.Touch
             if (wndHandle != IntPtr.Zero)
             {
                 GameWindow gameWindow = BlazorGameWindow.FromHandle(wndHandle);
-                Rectangle windowsBounds = gameWindow.ClientBounds;
-                Point winSize = new Point(windowsBounds.Width, windowsBounds.Height);
+                Rectangle clientBounds = gameWindow.ClientBounds;
+                Vector2 winOffset = new Vector2(clientBounds.X, clientBounds.Y);
+                Point winSize = new Point(clientBounds.Width, clientBounds.Height);
 
-                base.AddPressedEvent(nativeTouchId, position, winSize);
+                base.AddPressedEvent(nativeTouchId, position - winOffset, winSize);
             }
         }
         
@@ -90,10 +91,11 @@ namespace Microsoft.Xna.Platform.Input.Touch
             if (wndHandle != IntPtr.Zero)
             {
                 GameWindow gameWindow = BlazorGameWindow.FromHandle(wndHandle);
-                Rectangle windowsBounds = gameWindow.ClientBounds;
-                Point winSize = new Point(windowsBounds.Width, windowsBounds.Height);
+                Rectangle clientBounds = gameWindow.ClientBounds;
+                Vector2 winOffset = new Vector2(clientBounds.X, clientBounds.Y);
+                Point winSize = new Point(clientBounds.Width, clientBounds.Height);
 
-                base.AddMovedEvent(nativeTouchId, position, winSize);
+                base.AddMovedEvent(nativeTouchId, position - winOffset, winSize);
             }
         }
 
@@ -103,10 +105,11 @@ namespace Microsoft.Xna.Platform.Input.Touch
             if (wndHandle != IntPtr.Zero)
             {
                 GameWindow gameWindow = BlazorGameWindow.FromHandle(wndHandle);
-                Rectangle windowsBounds = gameWindow.ClientBounds;
-                Point winSize = new Point(windowsBounds.Width, windowsBounds.Height);
+                Rectangle clientBounds = gameWindow.ClientBounds;
+                Vector2 winOffset = new Vector2(clientBounds.X, clientBounds.Y);
+                Point winSize = new Point(clientBounds.Width, clientBounds.Height);
 
-                base.AddReleasedEvent(nativeTouchId, position, winSize);
+                base.AddReleasedEvent(nativeTouchId, position - winOffset, winSize);
             }
         }
         public override void AddCanceledEvent(int nativeTouchId, Vector2 position)
@@ -115,10 +118,11 @@ namespace Microsoft.Xna.Platform.Input.Touch
             if (wndHandle != IntPtr.Zero)
             {
                 GameWindow gameWindow = BlazorGameWindow.FromHandle(wndHandle);
-                Rectangle windowsBounds = gameWindow.ClientBounds;
-                Point winSize = new Point(windowsBounds.Width, windowsBounds.Height);
+                Rectangle clientBounds = gameWindow.ClientBounds;
+                Vector2 winOffset = new Vector2(clientBounds.X, clientBounds.Y);
+                Point winSize = new Point(clientBounds.Width, clientBounds.Height);
 
-                base.AddReleasedEvent(nativeTouchId, position, winSize);
+                base.AddReleasedEvent(nativeTouchId, position - winOffset, winSize);
             }
         }
 
